@@ -1,0 +1,7 @@
+# Slightly lighter panels
+[theme]
+primaryColor = "#023D7E"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#EAF3FF"  # brighter panel blue
+textColor = "#011F40"
+font = "sans serif"

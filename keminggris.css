@@ -1,0 +1,8 @@
+/* Optional 'card' look for expanders/containers */
+div[data-testid="stExpander"] > details {
+  border: 1px solid #E1ECFF;
+  background: #F9FBFF;
+  border-radius: 12px;
+}
+/* Tweak headings to brand color */
+h1, h2, h3 { color: #023D7E; }

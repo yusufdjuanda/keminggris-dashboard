@@ -1,0 +1,7 @@
+# Darker, higher-contrast panels
+[theme]
+primaryColor = "#3F74B5"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#EDF2F9"  # slate-ish light
+textColor = "#011F40"
+font = "sans serif"
