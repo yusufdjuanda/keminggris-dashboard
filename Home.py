@@ -16,9 +16,10 @@ Welcome! Use the sidebar to switch pages:
 
 - **👥 Participants**: demographics, discovery sources, motivation, top attendees
 - **🗣️ Session Feedback**: ratings, interest to join again, suggestions
-- **🧑‍🏫 Moderator Feedback**: (coming soon)
+- **🧑‍🏫 Moderator Feedback**: ratings, concerns, attendance
 
 Tip: keep your CSVs next to this file:
 - `participants.csv`
 - `session_feedback.csv`
+- `moderator_feedback.csv`
 """)
