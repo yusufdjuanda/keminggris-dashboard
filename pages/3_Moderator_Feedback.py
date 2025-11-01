@@ -194,3 +194,10 @@ with t_concerns:
 
 
 st.divider()
+
+with st.expander("Bonus 🎁", expanded=False):
+    st.markdown("""
+    Thanks for always inspring!
+    """)
+    st.image("assets/ss_from_ig.jpg", use_container_width=True)
+    
