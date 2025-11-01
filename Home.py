@@ -12,14 +12,14 @@ except Exception:
     pass
 st.title("📊 Keminggris Dashboard")
 st.markdown("""
-Welcome! Use the sidebar to switch pages:
+Interactive dashboard for analyzing feedback, engagement, and session performance from Keminggris English Club sessions.
+\nUse the sidebar to switch pages:
 
 - **👥 Participants**: demographics, discovery sources, motivation, top attendees
 - **🗣️ Session Feedback**: ratings, interest to join again, suggestions
 - **🧑‍🏫 Moderator Feedback**: ratings, concerns, attendance
 
-Tip: keep your CSVs next to this file:
-- `participants.csv`
-- `session_feedback.csv`
-- `moderator_feedback.csv`
+Date updated: 01/11/2025
 """)
+
+st.divider()

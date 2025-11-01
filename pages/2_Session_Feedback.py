@@ -69,7 +69,7 @@ try:
 except Exception:
     pass
 st.title("🗣️ Session Feedback | Keminggris Dashboard")
-st.caption("Deep-dive into ratings, interest to return, suggestions, shoutouts, and moderator performance.")
+st.caption("Explore participant feedback on sessions.")
 
 k1, k2, k3, k4, k5 = st.columns(5)
 with k1:
@@ -330,88 +330,89 @@ with t_suggestions:
 
 # --- Moderator Insights ---
 with t_moderators:
-    st.title("🧩 Moderator Suggestions | Sentiment")
+    st.title("🧩 Moderator Suggestions")
 
-    k1, k2, k3, k4 = st.columns(4)
-    with k1: st.metric("Total suggestions", f"{view['suggestions'].notna().sum():,}")
-    with k2: st.metric("Positive %", f"{(view['moderator_sentiment'].eq('Positive').mean()*100):.1f}%")
-    with k3: st.metric("Negative %", f"{(view['moderator_sentiment'].eq('Negative').mean()*100):.1f}%")
-    with k4: st.metric("Neutral %", f"{(view['moderator_sentiment'].eq('Neutral').mean()*100):.1f}%")
+    st.metric("Total suggestions", f"{view['suggestions'].notna().sum():,}")
+    # with k2: st.metric("Positive %", f"{(view['moderator_sentiment'].eq('Positive').mean()*100):.1f}%")
+    # with k3: st.metric("Negative %", f"{(view['moderator_sentiment'].eq('Negative').mean()*100):.1f}%")
+    # with k4: st.metric("Neutral %", f"{(view['moderator_sentiment'].eq('Neutral').mean()*100):.1f}%")
 
     # ---------- Charts ----------
-    colA, sep, colB = st.columns([2, 0.06, 2])
-    with colA:
-        st.subheader("Moderator Sentiment distribution")
-        sent_counts = view["moderator_sentiment"].value_counts().rename_axis("moderator_sentiment").reset_index(name="count")
-        sorted_ms = sent_counts.sort_values("count", ascending=False)["moderator_sentiment"].tolist()
-        base = (
-            alt.Chart(sent_counts)
-            .transform_joinaggregate(total='sum(count)')
-            .transform_calculate(
-                pct='datum.count / datum.total',
-                label="format(datum.count, ',d') + ' (' + format(datum.pct, '.0%') + ')'"
-            )
-        )
-        chart = alt.layer(
-            base.mark_bar().encode(
-                x=alt.X("count:Q", title="Count"),
-                y=alt.Y("moderator_sentiment:N", sort=sorted_ms),
-                tooltip=[
-                    alt.Tooltip("moderator_sentiment:N", title="Sentiment"),
-                    alt.Tooltip("count:Q", title="Count"),
-                    alt.Tooltip("pct:Q", title="Percent", format=".0%")
-                ]
-            ),
-            base.mark_text(align="left", baseline="middle", dx=3).encode(
-                x="count:Q",
-                y=alt.Y("moderator_sentiment:N", sort=sorted_ms),
-                text="label:N"
-            )
-        ).properties(height=350)
-        st.altair_chart(chart, use_container_width=False)
+    # colA, sep, colB = st.columns([2, 0.06, 2])
+    # with colA:
+    #     st.subheader("Moderator Sentiment distribution")
+    #     sent_counts = view["moderator_sentiment"].value_counts().rename_axis("moderator_sentiment").reset_index(name="count")
+    #     sorted_ms = sent_counts.sort_values("count", ascending=False)["moderator_sentiment"].tolist()
+    #     base = (
+    #         alt.Chart(sent_counts)
+    #         .transform_joinaggregate(total='sum(count)')
+    #         .transform_calculate(
+    #             pct='datum.count / datum.total',
+    #             label="format(datum.count, ',d') + ' (' + format(datum.pct, '.0%') + ')'"
+    #         )
+    #     )
+    #     chart = alt.layer(
+    #         base.mark_bar().encode(
+    #             x=alt.X("count:Q", title="Count"),
+    #             y=alt.Y("moderator_sentiment:N", sort=sorted_ms),
+    #             tooltip=[
+    #                 alt.Tooltip("moderator_sentiment:N", title="Sentiment"),
+    #                 alt.Tooltip("count:Q", title="Count"),
+    #                 alt.Tooltip("pct:Q", title="Percent", format=".0%")
+    #             ]
+    #         ),
+    #         base.mark_text(align="left", baseline="middle", dx=3).encode(
+    #             x="count:Q",
+    #             y=alt.Y("moderator_sentiment:N", sort=sorted_ms),
+    #             text="label:N"
+    #         )
+    #     ).properties(height=350)
+    #     st.altair_chart(chart, use_container_width=False)
 
-    with colB:
-        st.subheader("Moderator Name Mention Count")
-        mod_counts = view["moderator_name"].value_counts().rename_axis("moderator_name").reset_index(name="count")
-        sorted_mods = mod_counts.sort_values("count", ascending=False)["moderator_name"].tolist()
-        base2 = (
-            alt.Chart(mod_counts)
-            .transform_joinaggregate(total='sum(count)')
-            .transform_calculate(
-                pct='datum.count / datum.total',
-                label="format(datum.count, ',d') + ' (' + format(datum.pct, '.0%') + ')'"
-            )
+    # with colB:
+    st.subheader("Moderator Name Mention Count")
+    mod_counts = view["moderator_name"].value_counts().rename_axis("moderator_name").reset_index(name="count")
+    sorted_mods = mod_counts.sort_values("count", ascending=False)["moderator_name"].tolist()
+    base2 = (
+        alt.Chart(mod_counts)
+        .transform_joinaggregate(total='sum(count)')
+        .transform_calculate(
+            pct='datum.count / datum.total',
+            label="format(datum.count, ',d') + ' (' + format(datum.pct, '.0%') + ')'"
         )
-        chart2 = alt.layer(
-            base2.mark_bar().encode(
-                x=alt.X("count:Q", title="Count"),
-                y=alt.Y("moderator_name:N", sort=sorted_mods),
-                tooltip=[
-                    alt.Tooltip("moderator_name:N", title="Moderator"),
-                    alt.Tooltip("count:Q", title="Count"),
-                    alt.Tooltip("pct:Q", title="Percent", format=".0%")
-                ]
-            ),
-            base2.mark_text(align="left", baseline="middle", dx=3).encode(
-                x="count:Q",
-                y=alt.Y("moderator_name:N", sort=sorted_mods),
-                text="label:N"
-            )
-        ).properties(height=350)
-        st.altair_chart(chart2, use_container_width=False)
+    )
+    chart2 = alt.layer(
+        base2.mark_bar().encode(
+            x=alt.X("count:Q", title="Count"),
+            y=alt.Y("moderator_name:N", sort=sorted_mods),
+            tooltip=[
+                alt.Tooltip("moderator_name:N", title="Moderator"),
+                alt.Tooltip("count:Q", title="Count"),
+                alt.Tooltip("pct:Q", title="Percent", format=".0%")
+            ]
+        ),
+        base2.mark_text(align="left", baseline="middle", dx=3).encode(
+            x="count:Q",
+            y=alt.Y("moderator_name:N", sort=sorted_mods),
+            text="label:N"
+        )
+    ).properties(height=350)
+    st.altair_chart(chart2, use_container_width=True)
 
     moderator_name_present = view["moderator_name"].dropna().unique().tolist()
     moderator_name_filter_opts = ["All"] + moderator_name_present
-    sentiment_present = [s for s in ["Positive","Neutral","Negative", "Constructive"] if (view["moderator_sentiment"] == s).any()]
-    sentiment_filter_opts = ["All"] + sentiment_present
+    # sentiment_present = [s for s in ["Positive","Neutral","Negative", "Constructive"] if (view["moderator_sentiment"] == s).any()]
+    # sentiment_filter_opts = ["All"] + sentiment_present
 
-    f1, f2 = st.columns(2)
-    with f1:
-        sel_moderator_name = st.selectbox("Filter by moderator name", options=moderator_name_filter_opts, index=0)
-    with f2:
-        sel_sentiment = st.selectbox("Filter by sentiment", options=sentiment_filter_opts, index=0)
+    # f1, f2 = st.columns(2)
+    # with f1:
+    st.subheader("What they said about the moderator")
+    sel_moderator_name = st.selectbox("Filter by moderator name", options=moderator_name_filter_opts, index=0)
+    # with f2:
+    #     sel_sentiment = st.selectbox("Filter by sentiment", options=sentiment_filter_opts, index=0)
 
     filtered = view.copy()
+    filtered = filtered[filtered["moderator_name"].notna() & filtered["moderator_suggestions"].notna()]
     if sel_moderator_name != "All":
         pattern = rf"(?:^|;\s*){re.escape(sel_moderator_name)}(?:\s*;|$)"
         filtered = filtered[filtered["moderator_name"].fillna("").str.contains(pattern, regex=True)]
@@ -420,11 +421,13 @@ with t_moderators:
 
     st.subheader("Suggestions table")
     st.dataframe(
-        filtered[["session","moderator_name","moderator_sentiment","moderator_suggestions"]]
+        filtered[["session","moderator_name","moderator_suggestions"]]
             .sort_values("session", ascending=False),
         use_container_width=True,
         height=420
     )
+
+st.divider()
     
 
 # --- Export / Raw ---

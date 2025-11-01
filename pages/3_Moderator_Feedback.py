@@ -64,7 +64,7 @@ st.divider()
 t_overview, t_ratings, t_concerns = st.tabs([
     "Overview",
     "Ratings Breakdown",
-    "Concerns / Themes",
+    "Concerns",
 ])
 
 with t_overview:
@@ -193,3 +193,4 @@ with t_concerns:
     )
 
 
+st.divider()

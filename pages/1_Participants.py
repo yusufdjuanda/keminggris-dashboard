@@ -126,7 +126,7 @@ try:
 except Exception:
     pass
 st.title("👥 Participants | Keminggris Dashboard")
-st.caption("Explore participant demographics. Use the filters to focus your view.")
+st.caption("Explore participant demographics.")
 
 k1, k2, k3, k4 = st.columns(4)
 with k1:
@@ -159,6 +159,7 @@ with t_overview:
                     view.assign(discovery_source=view["discovery_source"].fillna("Unknown"))
                         .groupby("discovery_source").size().reset_index(name="count").sort_values("count", ascending=False)
                 )
+                src = src[src["discovery_source"] != "nan"]
                 st.altair_chart(
                     alt.Chart(src).mark_arc(innerRadius=90).encode(
                         theta="count:Q",
@@ -202,6 +203,7 @@ with t_overview:
                 .groupby("english_level").size().reset_index(name="count")
                 .sort_values("count", ascending=False)
         )
+        lvl = lvl[lvl["english_level"] != "nan"]
         sorted_lvls = lvl.sort_values("count", ascending=False)["english_level"].tolist()
         base = (
             alt.Chart(lvl)
@@ -240,6 +242,7 @@ with t_motivation:
                 .groupby("motivation").size().reset_index(name="count")
                 .sort_values("count", ascending=False).head(20)
         )
+        mot = mot[mot["motivation"] != "Unknown"]
         sorted_mots = mot.sort_values("count", ascending=False)["motivation"].tolist()
         base = (
             alt.Chart(mot)
@@ -272,8 +275,7 @@ with t_motivation:
         st.altair_chart(chart, use_container_width=True)
 
 with t_sessions:
-    st.subheader("Top Participants by Sessions (Names)")
-    st.write("Respects current filters and uniqueness mode.")
+    st.subheader("Top participants attending the most sessions")
     base_for_top = view.copy()
     top_people = (
         base_for_top.groupby(["participant_key", "display_name"])["sessions_count"]
@@ -319,6 +321,4 @@ with t_sessions:
         use_container_width=True
     )
 
-# Optional: peek at rows
-# with st.expander("Peek raw filtered rows"):
-#     st.dataframe(data, use_container_width=True)
+st.divider()
